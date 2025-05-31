@@ -242,6 +242,10 @@ export function View() {
 
   // Handle double click on the stage to add a new node
   const handleStageDoubleClick = useCallback( ( e: KonvaEventObject<MouseEvent> ) => {
+    // Prevent event bubbling and default behavior
+    e.evt.stopPropagation();
+    e.evt.preventDefault();
+
     // Get position relative to the stage
     const stage = e.target.getStage();
     if ( !stage ) return;
@@ -252,7 +256,6 @@ export function View() {
     // Add a new node at the clicked position with just the position specified
     // The rest of the shape properties will use defaults
     addNode( {
-      type: "key_value", // Explicitly specify the node type
       parentId: localGraph.currentRoot?.id,
       shape: {
         position: {

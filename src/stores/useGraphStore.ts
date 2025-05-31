@@ -9,9 +9,22 @@ import {
 } from "@graphTypes/graphTypes";
 import { nanoid } from "nanoid";
 
-type InputFunctionNode = Partial<Omit<FunctionNode, "shape">> & { type: "function" };
-type InputKeyValueNode = Partial<Omit<KeyValueNode, "shape">> & { type: "key_value" };
-type NodeInput = ( InputFunctionNode | InputKeyValueNode ) & { shape?: Partial<NodeShape> };
+// Base input type that allows partial overrides of any node properties except id
+type NodeInputBase = {
+  parentId?: NodeID;
+  label?: string;
+  shape?: Partial<NodeShape>;
+};
+
+// Specific input types when you want to explicitly specify the type
+type InputFunctionNode = NodeInputBase & { type: "function"; metadata?: MetaDataFunction };
+type InputKeyValueNode = NodeInputBase & { type: "key_value"; metadata?: MetaDataKeyValue };
+
+// Union type that allows either explicit typing or using default template
+type NodeInput =
+  | NodeInputBase  // Uses default node type template
+  | InputFunctionNode  // Explicit function node
+  | InputKeyValueNode; // Explicit key-value node
 
 export interface GraphStore extends GraphState {
   addNode: ( partial: NodeInput ) => NodeID;
@@ -86,43 +99,49 @@ export const useGraphStore = createWithEqualityFn<GraphStore>( ( set, get ) => (
   addNode: ( partial: NodeInput ) => {
     const id = nanoid();
     const { defaultNodeTypeId, nodeTypes } = get();
-    const template = nodeTypes[ defaultNodeTypeId ].template
+    const template = nodeTypes[ defaultNodeTypeId ].template;
+
     set( ( state ) => {
+      // Determine the node type to use
+      const nodeType = 'type' in partial ? partial.type : template.type;
+
       // Merge default shape with any provided shape properties
       const mergedShape: NodeShape = {
         ...template.shape,
         ...( partial.shape || {} ),
       };
 
-      if ( partial.type === "key_value" && template.type === "key_value" ) {
+      if ( nodeType === "key_value" ) {
         const newNode: KeyValueNode = {
-          ...template,
-          ...partial,
-          shape: mergedShape,
-          metadata: partial.metadata || template.metadata as MetaDataKeyValue || {},
           id,
+          type: "key_value",
+          label: partial.label || template.label,
+          parentId: partial.parentId,
+          shape: mergedShape,
+          metadata: ( 'metadata' in partial ? partial.metadata : template.metadata ) as MetaDataKeyValue || {},
         };
         return {
           nodes: { ...state.nodes, [ id ]: newNode },
           modified: Date.now()
         };
-      } else if ( partial.type === "function" && template.type === "function" ) {
+      } else if ( nodeType === "function" ) {
         const newNode: FunctionNode = {
-          ...template,
-          ...partial,
-          shape: mergedShape,
-          metadata: partial.metadata || template.metadata as MetaDataFunction || {},
           id,
+          type: "function",
+          label: partial.label || template.label,
+          parentId: partial.parentId,
+          shape: mergedShape,
+          metadata: ( 'metadata' in partial ? partial.metadata : template.metadata ) as MetaDataFunction || {},
         };
         return {
           nodes: { ...state.nodes, [ id ]: newNode },
           modified: Date.now()
         };
       } else {
-        throw new Error( "Invalid node type" );
+        throw new Error( `Unsupported node type: ${nodeType}` );
       }
     } );
-    console.debug( "Added node:", partial.label, id );
+    console.debug( "Added node:", partial.label || template.label, id );
     return id; // Return the ID to allow chaining or referencing
   },
 
