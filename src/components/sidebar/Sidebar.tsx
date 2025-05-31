@@ -1,16 +1,16 @@
-import { Bar } from "./core/Bar";
-import { Section } from "./core/Section";
-import { useGraphStore, newProject } from "../stores/useGraphStore";
+import { Bar } from "@core/Bar";
+import { Section } from "@core/Section";
+import { useGraphStore, newProject } from "@stores/useGraphStore";
 import { nanoid } from "nanoid";
-import { Input } from "./core/Input";
-import { saveProjectToLocalStorage } from "../utils/projectUtils";
-import { Button } from "./core/Button";
-import { ImportButton } from "./sidebar/ImportButton";
-import { ExportButton } from "./sidebar/ExportButton";
-import { NodeTree } from "./sidebar/NodeTree";
-import { Projects } from "./sidebar/Projects";
-import { NodeTypeEditor } from "./sidebar/NodeTypeEditor";
-import { Controls } from "./sidebar/Controls";
+import { Input } from "@core/Input";
+import { saveProjectToLocalStorage } from "@utils/projectUtils";
+import { Button } from "@core/Button";
+import { ImportButton } from "@projects/ImportButton";
+import { ExportButton } from "@projects/ExportButton";
+import { NodeTree } from "@projects/NodeTree";
+import { Projects } from "@projects/Projects";
+import { NodeTypeEditor } from "@nodeTemplates/NodeTemplateEditor";
+import { Controls } from "@rules/Controls";
 
 export function Sidebar() {
   const { setProjectName, setProjectDescription } = useGraphStore();

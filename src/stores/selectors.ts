@@ -1,6 +1,6 @@
-import { Node, Edge, GraphState, GraphView, MetaDataID, NodeID } from "../logic/graphTypes";
-import { getChildren, getEdgesOfNode } from "../logic/graphLogic";
-import { GraphStore } from "./useGraphStore";
+import { Node, Edge, GraphState, GraphView, MetaDataID, NodeID } from "@graphTypes/graphTypes";
+import { getChildren, getEdgesOfNode } from "@logic/graphLogic";
+import { GraphStore } from "@stores/useGraphStore";
 
 export function selectLocalGraphView( state: GraphState ): GraphView {
   const { nodes, edges, currentRootId } = state;

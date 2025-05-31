@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import { Button } from "../core/Button";
-import { useGraphStore } from "../../stores/useGraphStore";
+import { Button } from "@core/Button";
+import { useGraphStore } from "@stores/useGraphStore";
 
 export function ImportButton() {
   const inputFileRef = useRef<HTMLInputElement>( null );

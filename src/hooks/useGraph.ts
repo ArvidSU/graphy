@@ -1,8 +1,8 @@
-import { useGraphStore } from "../stores/useGraphStore";
+import { useGraphStore } from "@stores/useGraphStore";
 import { shallow } from "zustand/shallow";
-import { selectLocalGraphView, selectNodeAdjacentData, selectKVPMetadata } from "../stores/selectors";
-import { MetaDataID, NodeID, Node } from "../logic/graphTypes";
-import { evaluateMetadata } from "../logic/kvpLogic";
+import { selectLocalGraphView, selectNodeAdjacentData, selectKVPMetadata } from "@stores/selectors";
+import { MetaDataID, NodeID, Node } from "@graphTypes/graphTypes";
+import { evaluateMetadata } from "@logic/kvpLogic";
 
 export function useLocalGraph() {
   const localGraph = useGraphStore( selectLocalGraphView, shallow );

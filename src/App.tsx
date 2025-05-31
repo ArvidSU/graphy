@@ -1,7 +1,7 @@
 import './App.css'
-import { Sidebar } from "./components/Sidebar";
+import { Sidebar } from "./components/sidebar/Sidebar";
 import { View } from "./components/View";
-import { Toolbar } from "./components/Toolbar";
+import { Toolbar } from "./components/toolbar/Toolbar";
 
 function App() {
 

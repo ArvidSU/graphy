@@ -1,13 +1,13 @@
-import { Section } from "../core/Section";
-import { useGraphStore } from "../../stores/useGraphStore";
-import { Node } from "../../logic/graphTypes";
-import { Input } from "../core/Input";
-import { Button, DeleteButton } from "../core/Button";
-import { Expander } from "../core/Expander";
-import { Edges } from "./Edges";
-import { KVPAvailableReferences, KVPMetadataEditor } from "./KVPEditor";
-import { NodeEditor } from "./NodeEditor";
-import { useNode, useLocalGraph } from "../../hooks/useGraph";
+import { Section } from "@core/Section";
+import { useGraphStore } from "@stores/useGraphStore";
+import { Node } from "@graphTypes/graphTypes";
+import { Input } from "@core/Input";
+import { Button, DeleteButton } from "@core/Button";
+import { Expander } from "@core/Expander";
+import { Edges } from "@edges/Edges";
+import { KVPAvailableReferences, KVPMetadataEditor } from "@nodes/key_value_pair/KVPEditor";
+import { NodeEditor } from "@nodes/NodeEditor";
+import { useNode, useLocalGraph } from "@hooks/useGraph";
 
 export function NodeToolbar() {
   const {

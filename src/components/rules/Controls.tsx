@@ -1,6 +1,6 @@
-import { Toggle } from "../core/Toggle"
-import { Section } from "../core/Section"
-import { ToolButton } from "../core/Button";
+import { Toggle } from "@core/Toggle"
+import { Section } from "@core/Section"
+import { ToolButton } from "@core/Button";
 
 export function Controls( props: { title?: string } ) {
   const { title } = props;

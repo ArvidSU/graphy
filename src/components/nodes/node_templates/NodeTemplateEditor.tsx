@@ -1,10 +1,10 @@
-import { Section } from "../core/Section";
-import { Button, CopyButton, DeleteButton } from "../core/Button";
-import { Input } from "../core/Input";
-import { useGraphStore } from "../../stores/useGraphStore";
-import { ColorEditor } from "../toolbar/NodeEditor";
-import { NodeTypeID } from "../../logic/graphTypes";
-import { Expander } from "../core/Expander";
+import { Section } from "@core/Section";
+import { Button, CopyButton, DeleteButton } from "@core/Button";
+import { Input } from "@core/Input";
+import { useGraphStore } from "@stores/useGraphStore";
+import { ColorEditor } from "@nodes/NodeEditor";
+import { NodeTypeID } from "@graphTypes/graphTypes";
+import { Expander } from "@core/Expander";
 
 export function NodeTypeEditor() {
   const { nodeTypes } = useGraphStore();

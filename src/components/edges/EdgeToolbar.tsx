@@ -1,8 +1,8 @@
-import { Section } from "../core/Section";
-import { useGraphStore } from "../../stores/useGraphStore";
-import { Input } from "../core/Input";
-import { DeleteButton } from "../core/Button";
-import { Expander } from "../core/Expander";
+import { useGraphStore } from "@stores/useGraphStore";
+import { Section } from "@core/Section";
+import { Input } from "@core/Input";
+import { DeleteButton } from "@core/Button";
+import { Expander } from "@core/Expander";
 
 export function EdgeToolbar() {
   const { edges, selectedEdgeId, setSelectedEdgeId, deleteEdge, updateEdge } = useGraphStore();

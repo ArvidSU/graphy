@@ -1,6 +1,6 @@
-import { Node } from "../../logic/graphTypes";
-import { AutocompleteInput } from "../core/AutocompleteInput";
-import { Section } from "../core/Section";
+import { Node } from "@graphTypes/graphTypes";
+import { AutocompleteInput } from "@core/AutocompleteInput";
+import { Section } from "@core/Section";
 
 export function NodeEditor( props: { node: Node, onChange: ( node: Node ) => void } ) {
   const { node, onChange } = props;

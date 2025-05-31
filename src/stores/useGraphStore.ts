@@ -6,7 +6,7 @@ import {
   MetaDataKeyValue,
   MetaDataFunction,
   ToolbarState
-} from "../logic/graphTypes";
+} from "@graphTypes/graphTypes";
 import { nanoid } from "nanoid";
 
 type InputFunctionNode = Partial<Omit<FunctionNode, "shape">> & { type: "function" };

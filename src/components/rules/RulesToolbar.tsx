@@ -1,5 +1,5 @@
-import { Section } from "../core/Section";
-import { Button } from "../core/Button";
+import { Section } from "@core/Section";
+import { Button } from "@core/Button";
 
 export function RulesToolbar() {
   return (

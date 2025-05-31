@@ -1,8 +1,8 @@
-import { Section } from "../core/Section";
-import { useGraphStore } from "../../stores/useGraphStore";
-import { Input } from "../core/Input";
-import { Button, DeleteButton } from "../core/Button";
-import { Expander } from "../core/Expander";
+import { useGraphStore } from "@stores/useGraphStore";
+import { Section } from "@core/Section";
+import { Input } from "@core/Input";
+import { Button, DeleteButton } from "@core/Button";
+import { Expander } from "@core/Expander";
 
 export function NodeTypeToolbar() {
   const {
@@ -26,8 +26,8 @@ export function NodeTypeToolbar() {
                 <Button
                   onClick={ () => setDefaultNodeType( nodeType.id ) }
                   className={ `text-xs px-2 py-1 ${defaultNodeTypeId === nodeType.id
-                      ? "bg-green-500 text-white"
-                      : "bg-gray-200 text-gray-700"
+                    ? "bg-green-500 text-white"
+                    : "bg-gray-200 text-gray-700"
                     }` }
                 >
                   { defaultNodeTypeId === nodeType.id ? "Default" : "Set Default" }

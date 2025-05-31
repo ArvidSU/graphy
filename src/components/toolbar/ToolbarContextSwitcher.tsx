@@ -1,7 +1,7 @@
-import { useGraphStore } from "../../stores/useGraphStore";
-import { ToolbarState } from "../../logic/graphTypes";
-import { Button } from "../core/Button";
-import { Section } from "../core/Section";
+import { useGraphStore } from "@stores/useGraphStore";
+import { ToolbarState } from "@graphTypes/graphTypes";
+import { Button } from "@core/Button";
+import { Section } from "@core/Section";
 
 export function ToolbarContextSwitcher() {
   const { toolbarState, setToolbarState } = useGraphStore();

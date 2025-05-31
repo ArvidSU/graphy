@@ -1,5 +1,5 @@
-import { Button } from "../core/Button";
-import { useGraphStore } from "../../stores/useGraphStore";
+import { Button } from "@core/Button";
+import { useGraphStore } from "@stores/useGraphStore";
 
 /**
  * ExportButton component that handles exporting the graph data to a JSON file

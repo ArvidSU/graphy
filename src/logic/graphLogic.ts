@@ -1,4 +1,4 @@
-import { Node, NodeID, Edge, MetaDataKeyValue, EdgeID, KeyValueNode } from "../logic/graphTypes";
+import { Node, NodeID, Edge, MetaDataKeyValue, EdgeID, KeyValueNode } from "@graphTypes/graphTypes";
 import { evaluate } from "mathjs";
 
 export function getChildren( nodes: Record<NodeID, Node>, parentId: NodeID ): Node[] {

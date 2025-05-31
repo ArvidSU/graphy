@@ -20,7 +20,49 @@
     "paths": {
       "@/*": [
         "src/*"
-      ]
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@logic/*": [
+        "src/logic/*"
+      ],
+      "@stores/*": [
+        "src/stores/*"
+      ],
+      "@graphTypes/*": [
+        "src/types/*"
+      ],
+      "@hooks/*": [
+        "src/hooks/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@core/*": [
+        "src/components/core/*"
+      ],
+      "@nodes/*": [
+        "src/components/nodes/*"
+      ],
+      "@edges/*": [
+        "src/components/edges/*"
+      ],
+      "@projects/*": [
+        "src/components/projects/*"
+      ],
+      "@rules/*": [
+        "src/components/rules/*"
+      ],
+      "@toolbar/*": [
+        "src/components/toolbar/*"
+      ],
+      "@sidebar/*": [
+        "src/components/sidebar/*"
+      ],
+      "@nodeTemplates/*": [
+        "src/components/nodes/node_templates/*"
+      ],
     },
     /* Linting */
     "strict": true,

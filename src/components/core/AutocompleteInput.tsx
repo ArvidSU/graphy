@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, JSX } from "react";
-import { Input } from "./Input";
+import { Input } from "@core/Input";
 
 export function AutocompleteInput( {
   id,

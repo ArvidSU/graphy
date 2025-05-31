@@ -1,8 +1,8 @@
-import { Edge } from "../../logic/graphTypes";
-import { useGraphStore } from "../../stores/useGraphStore";
-import { Section } from "../core/Section";
-import { Expander } from "../core/Expander";
-import { DeleteButton } from "../core/Button";
+import { Edge } from "@graphTypes/graphTypes";
+import { useGraphStore } from "@stores/useGraphStore";
+import { Section } from "@core/Section";
+import { Expander } from "@core/Expander";
+import { DeleteButton } from "@core/Button";
 
 export function Edges( props: { edges?: Edge[] } ) {
   const { deleteEdge, setSelectedEdgeId, selectedEdgeId } = useGraphStore( ( state ) => state );

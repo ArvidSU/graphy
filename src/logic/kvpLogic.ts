@@ -1,7 +1,5 @@
-import { MetaDataID, Node } from "./graphTypes";
+import { MetaDataID, Node, KeyValuePairMetadata } from "@graphTypes/graphTypes";
 import { evaluate } from "mathjs";
-import { KeyValuePairMetadata } from "./graphTypes";
-
 
 export function getRef( id: MetaDataID ): string {
   return `_${id.substring( 0, 4 )}`;

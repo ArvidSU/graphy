@@ -1,11 +1,11 @@
-import { Bar } from "./core/Bar";
-import { useGraphStore } from "../stores/useGraphStore";
-import { NodeToolbar } from "./toolbar/NodeToolbar";
-import { EdgeToolbar } from "./toolbar/EdgeToolbar";
-import { NodeTypeToolbar } from "./toolbar/NodeTypeToolbar";
-import { ProjectToolbar } from "./toolbar/ProjectToolbar";
-import { RulesToolbar } from "./toolbar/RulesToolbar";
-import { ToolbarContextSwitcher } from "./toolbar/ToolbarContextSwitcher";
+import { Bar } from "@core/Bar";
+import { useGraphStore } from "@stores/useGraphStore";
+import { NodeToolbar } from "@nodes/NodeToolbar";
+import { EdgeToolbar } from "@edges/EdgeToolbar";
+import { NodeTypeToolbar } from "@nodes/node_templates/NodeTemplateToolbar";
+import { ProjectToolbar } from "@projects/ProjectToolbar";
+import { RulesToolbar } from "@rules/RulesToolbar";
+import { ToolbarContextSwitcher } from "./ToolbarContextSwitcher";
 
 export function Toolbar() {
   const { toolbarState } = useGraphStore();

@@ -12,6 +12,20 @@ export default defineConfig( {
   resolve: {
     alias: {
       '@': path.resolve( './src' ),
+      '@components': path.resolve( './src/components' ),
+      '@logic': path.resolve( './src/logic' ),
+      '@stores': path.resolve( './src/stores' ),
+      '@graphTypes': path.resolve( './src/types' ),
+      '@hooks': path.resolve( './src/hooks' ),
+      '@utils': path.resolve( './src/utils' ),
+      '@core': path.resolve( './src/components/core' ),
+      '@nodes': path.resolve( './src/components/nodes' ),
+      '@edges': path.resolve( './src/components/edges' ),
+      '@projects': path.resolve( './src/components/projects' ),
+      '@rules': path.resolve( './src/components/rules' ),
+      '@toolbar': path.resolve( './src/components/toolbar' ),
+      '@sidebar': path.resolve( './src/components/sidebar' ),
+      '@nodeTemplates': path.resolve( './src/components/nodes/node_templates' ),
     },
   },
   optimizeDeps: {

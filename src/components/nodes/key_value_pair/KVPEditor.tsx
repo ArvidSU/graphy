@@ -1,15 +1,15 @@
 import { useState, ChangeEvent } from "react";
-import { useGraphStore } from "../../stores/useGraphStore";
-import { MetaDataID, MetaDataKeyValue, KeyValueNode, Node } from "../../logic/graphTypes";
-import { evaluateExpression } from "../../logic/graphLogic";
-import { Input } from "../core/Input";
-import { AutocompleteInput } from "../core/AutocompleteInput";
-import { DeleteButton, ToolButton, CopyButton } from "../core/Button";
-import { Section } from "../core/Section";
-import { Expander } from "../core/Expander";
+import { useGraphStore } from "@stores/useGraphStore";
+import { MetaDataID, MetaDataKeyValue, KeyValueNode, Node } from "@graphTypes/graphTypes";
+import { evaluateExpression } from "@logic/graphLogic";
+import { Input } from "@core/Input";
+import { AutocompleteInput } from "@core/AutocompleteInput";
+import { DeleteButton, ToolButton, CopyButton } from "@core/Button";
+import { Section } from "@core/Section";
+import { Expander } from "@core/Expander";
 import { nanoid } from "nanoid";
-import { getRef } from "../../logic/kvpLogic";
-import { useNode, useKVPMetadata } from "../../hooks/useGraph";
+import { getRef } from "@logic/kvpLogic";
+import { useNode, useKVPMetadata } from "@hooks/useGraph";
 
 export function CreateKVP( props: { node: KeyValueNode } ) {
   const state = useGraphStore();

@@ -1,6 +1,6 @@
-import { useGraphStore } from "../../stores/useGraphStore";
-import { getChildren } from "../../logic/graphLogic";
-import { Node } from "../../logic/graphTypes";
+import { useGraphStore } from "@stores/useGraphStore";
+import { getChildren } from "@logic/graphLogic";
+import { Node } from "@graphTypes/graphTypes";
 
 export function NodeTree( props: { node: Node, indent: number } ) {
   const { node, indent } = props;

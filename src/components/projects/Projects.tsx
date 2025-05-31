@@ -1,6 +1,6 @@
-import { useGraphStore, newProject } from "../../stores/useGraphStore";
-import { GraphState } from "../../logic/graphTypes";
-import { Button, DeleteButton, CopyButton } from "../core/Button";
+import { useGraphStore, newProject } from "@stores/useGraphStore";
+import { GraphState } from "@graphTypes/graphTypes";
+import { Button, DeleteButton, CopyButton } from "@core/Button";
 import { nanoid } from "nanoid";
 import { useEffect, useState } from "react";
 import {
@@ -8,8 +8,8 @@ import {
   saveProjectToLocalStorage,
   deleteProjectFromLocalStorage,
   formatDate
-} from "../../utils/projectUtils";
-import { Expander } from "../core/Expander";
+} from "@utils/projectUtils";
+import { Expander } from "@core/Expander";
 
 export function Projects() {
   const state = useGraphStore();

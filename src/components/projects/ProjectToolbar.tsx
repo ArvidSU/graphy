@@ -1,7 +1,7 @@
-import { Section } from "../core/Section";
-import { useGraphStore } from "../../stores/useGraphStore";
-import { Input } from "../core/Input";
-import { Button } from "../core/Button";
+import { useGraphStore } from "@stores/useGraphStore";
+import { Section } from "@core/Section";
+import { Input } from "@core/Input";
+import { Button } from "@core/Button";
 
 export function ProjectToolbar() {
   const {

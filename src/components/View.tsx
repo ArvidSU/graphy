@@ -1,10 +1,10 @@
-import { useGraphStore } from "../stores/useGraphStore";
-import { selectLocalGraphView } from "../stores/selectors";
+import { useGraphStore } from "@stores/useGraphStore";
+import { selectLocalGraphView } from "@stores/selectors";
 import { shallow } from "zustand/shallow";
 import { Stage, Layer, Circle, Text, Group, Arrow, Line } from "react-konva";
 import { useCallback, useState, useEffect, FC } from "react";
 import { KonvaEventObject } from "konva/lib/Node";
-import { Node, Edge } from "../logic/graphTypes";
+import { Node, Edge } from "@graphTypes/graphTypes";
 
 const EDGE_COLOR = "#666";
 const EDGE_WIDTH = 2;
