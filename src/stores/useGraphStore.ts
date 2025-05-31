@@ -4,7 +4,8 @@ import {
   KeyValueNode, NodeShape,
   NodeType, NodeTypeID, NodeTypeTemplate,
   MetaDataKeyValue,
-  MetaDataFunction
+  MetaDataFunction,
+  ToolbarState
 } from "../logic/graphTypes";
 import { nanoid } from "nanoid";
 
@@ -30,6 +31,7 @@ export interface GraphStore extends GraphState {
   deleteNodeType: ( id: NodeTypeID ) => void;
   setDefaultNodeType: ( id: NodeTypeID | undefined ) => void;
   updateNodeType: ( id: NodeTypeID, nodeType: NodeType ) => void;
+  setToolbarState: ( toolbarState: ToolbarState ) => void;
 }
 
 
@@ -69,6 +71,9 @@ export const newProject: GraphState = {
     }
   },
   defaultNodeTypeId: "default",
+  toolbarState: {
+    context: "project"
+  }
 }
 
 export const useGraphStore = createWithEqualityFn<GraphStore>( ( set, get ) => ( {
@@ -135,6 +140,20 @@ export const useGraphStore = createWithEqualityFn<GraphStore>( ( set, get ) => (
     console.debug( "Updated node: ", node.label, node.id );
   },
 
+  updateEdge: ( id, partial ) => {
+    set( ( state ) => {
+      const { edges } = state;
+      if ( !edges[ id ] ) {
+        throw new Error( `Edge with id ${id} does not exist` );
+      }
+      return {
+        edges: { ...edges, [ id ]: { ...edges[ id ], ...partial } },
+        modified: Date.now()
+      };
+    } );
+    console.debug( "Updated edge: ", partial.label, id );
+  },
+
   addEdge: ( partial ) => {
     // Check if source and target nodes exist
     const { source, target } = partial;
@@ -187,6 +206,7 @@ export const useGraphStore = createWithEqualityFn<GraphStore>( ( set, get ) => (
       return {
         nodes: newNodes,
         edges: newEdges,
+        selectedNodeId: id === state.selectedNodeId ? undefined : state.selectedNodeId, // Clear selection if this node was selected
         modified: Date.now()
       };
     } );
@@ -203,18 +223,40 @@ export const useGraphStore = createWithEqualityFn<GraphStore>( ( set, get ) => (
       console.debug( "Deleted edge: ", id );
       return {
         edges: newEdges,
+        selectedEdgeId: id === state.selectedEdgeId ? undefined : state.selectedEdgeId, // Clear selection if this edge was selected
         modified: Date.now()
       };
     } );
   },
 
   setSelectedNodeId: ( id ) => {
-    set( { selectedNodeId: id } );
+    if ( id ) {
+      set( {
+        selectedNodeId: id,
+        selectedEdgeId: undefined, // Clear edge selection when selecting a node
+        toolbarState: { context: "node" } // Auto-switch to node context
+      } );
+    } else {
+      set( {
+        selectedNodeId: undefined
+      } );
+    }
     console.debug( "Selected node: ", id );
   },
 
   setSelectedEdgeId: ( id ) => {
-    set( { selectedEdgeId: id } );
+    if ( id ) {
+      set( {
+        selectedEdgeId: id,
+        selectedNodeId: undefined, // Clear node selection when selecting an edge
+        toolbarState: { context: "edge" } // Auto-switch to edge context
+      } );
+    } else {
+      set( {
+        selectedEdgeId: undefined
+      } );
+    }
+
     console.debug( "Selected edge: ", id );
   },
 
@@ -234,14 +276,13 @@ export const useGraphStore = createWithEqualityFn<GraphStore>( ( set, get ) => (
   },
 
   loadGraph: ( importedState ) => {
-    // Ensure timestamps exist (for backward compatibility)
-    const now = Date.now();
     const stateToLoad = {
       ...importedState,
-      created: importedState.created || now,
-      modified: importedState.modified || now,
-      nodeTypes: importedState.nodeTypes || {},
-      defaultNodeTypeId: importedState.defaultNodeTypeId || undefined
+      created: importedState.created,
+      modified: importedState.modified,
+      nodeTypes: importedState.nodeTypes,
+      defaultNodeTypeId: importedState.defaultNodeTypeId,
+      toolbarState: importedState.toolbarState || { context: "project" as const }
     };
     set( stateToLoad );
     console.debug( "Loaded graph state with name:", importedState.name );
@@ -309,6 +350,25 @@ export const useGraphStore = createWithEqualityFn<GraphStore>( ( set, get ) => (
       };
     } );
     console.debug( "Updated node type:", nodeType.name, id );
+  },
+
+  setToolbarState: ( toolbarState ) => {
+    set( () => {
+      // When manually switching to a different context, optionally clear incompatible selections
+      const updates: Partial<GraphState> = { toolbarState };
+
+      // If switching to nodeType, project, or rules context, clear node/edge selections
+      if ( [ "nodeType", "project", "rules" ].includes( toolbarState.context ) ) {
+        return {
+          ...updates,
+          selectedNodeId: undefined,
+          selectedEdgeId: undefined
+        };
+      }
+
+      return updates;
+    } );
+    console.debug( "Set toolbar state:", toolbarState );
   },
 
 } as GraphState & GraphStore ) );

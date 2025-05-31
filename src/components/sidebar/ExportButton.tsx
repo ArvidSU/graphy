@@ -13,12 +13,16 @@ export function ExportButton() {
       id: graphState.id,
       name: graphState.name,
       description: graphState.description,
+      created: graphState.created,
+      modified: graphState.modified,
       currentRootId: graphState.currentRootId,
       nodes: graphState.nodes,
       edges: graphState.edges,
       selectedNodeId: graphState.selectedNodeId,
       selectedEdgeId: graphState.selectedEdgeId,
-      defaultNode: graphState.defaultNode,
+      nodeTypes: graphState.nodeTypes,
+      defaultNodeTypeId: graphState.defaultNodeTypeId,
+      toolbarState: graphState.toolbarState,
     };
 
     // Convert to JSON string with nice formatting

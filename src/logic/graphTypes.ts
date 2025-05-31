@@ -70,6 +70,11 @@ export interface NodeType {
   template: NodeTypeTemplate;
 }
 
+export interface ToolbarState {
+  context: "node" | "nodeType" | "edge" | "project" | "rules";
+  id?: NodeID | NodeTypeID | EdgeID | ProjectID
+}
+
 export interface GraphState {
   id: ProjectID;
   name: string;
@@ -83,6 +88,7 @@ export interface GraphState {
   selectedEdgeId?: EdgeID;
   nodeTypes: Record<NodeTypeID, NodeType>;
   defaultNodeTypeId: NodeTypeID;
+  toolbarState: ToolbarState;
 }
 
 export interface GraphView {

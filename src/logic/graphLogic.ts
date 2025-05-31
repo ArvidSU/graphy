@@ -31,7 +31,10 @@ export function collectIncomingMetadata(
   incomingEdges.forEach( edge => {
     const sourceNode = nodes[ edge.source ];
     if ( sourceNode?.type === "key_value" ) {
-      result[ sourceNode.id ] = evaluateExpression( sourceNode as KeyValueNode );
+      const evaluatedMetadata = evaluateExpression( sourceNode as KeyValueNode );
+      if ( evaluatedMetadata ) {
+        result[ sourceNode.id ] = evaluatedMetadata;
+      }
     }
   } );
 
@@ -47,11 +50,13 @@ export function collectIncomingMetadata(
 export function createEvaluationScope(
   node: KeyValueNode,
   incomingMetadata: Record<NodeID, MetaDataKeyValue>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Record<string, any> {
   // Local scope from the node's own metadata
-  const localScope = Object.entries( node.metadata ).reduce( ( acc, [ id, kvp ] ) => {
+  const localScope = Object.entries( node.metadata ).reduce( ( acc, [ , kvp ] ) => {
     acc[ kvp.key ] = kvp.value;
     return acc;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }, {} as Record<string, any> );
 
   // Add incoming metadata with node prefixes
