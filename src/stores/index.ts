@@ -12,7 +12,7 @@ export { useGraphStore } from './useGraphStore';
 export { createNodeStore } from './nodeStore';
 export { createEdgeStore } from './edgeStore';
 export { createProjectStore } from './projectStore';
-export { createNodeTypeStore } from './nodeTypeStore';
+export { createNodeTemplateStore as createNodeTypeStore } from './nodeTemplateStore';
 export { createToolbarStore } from './toolbarStore';
 
 // Store utilities and types
@@ -29,7 +29,7 @@ export type {
 export type { NodeStore } from './nodeStore';
 export type { EdgeStore } from './edgeStore';
 export type { ProjectStore } from './projectStore';
-export type { NodeTypeStore } from './nodeTypeStore';
+export type { NodeTemplateStore as NodeTypeStore } from './nodeTemplateStore';
 export type { ToolbarStore } from './toolbarStore';
 
 // Re-export commonly used types

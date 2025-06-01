@@ -1,18 +1,18 @@
-import { ToolbarState, GraphState } from "@graphTypes/graphTypes";
+import { ToolbarContext, GraphState } from "@graphTypes/graphTypes";
 import { GraphSetState } from "./storeTypes";
 
 export interface ToolbarStore {
-  setToolbarState: ( toolbarState: ToolbarState ) => void;
+  setToolbarContext: ( toolbarContext: ToolbarContext ) => void;
 }
 
 export const createToolbarStore = ( set: GraphSetState ): ToolbarStore => ( {
-  setToolbarState: ( toolbarState ) => {
+  setToolbarContext: ( toolbarContext ) => {
     set( () => {
       // When manually switching to a different context, optionally clear incompatible selections
-      const updates: Partial<GraphState> = { toolbarState };
+      const updates: Partial<GraphState> = { toolbarContext: toolbarContext };
 
       // If switching to nodeType, project, or rules context, clear node/edge selections
-      if ( [ "nodeType", "project", "rules" ].includes( toolbarState.context ) ) {
+      if ( [ "nodeType", "project", "rules" ].includes( toolbarContext ) ) {
         return {
           ...updates,
           selectedNodeId: undefined,
@@ -22,6 +22,6 @@ export const createToolbarStore = ( set: GraphSetState ): ToolbarStore => ( {
 
       return updates;
     } );
-    console.debug( "Set toolbar state:", toolbarState );
+    console.debug( "Set toolbar state:", toolbarContext );
   },
 } );

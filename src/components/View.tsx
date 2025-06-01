@@ -244,6 +244,8 @@ export function View() {
   const handleStageDoubleClick = useCallback( ( e: KonvaEventObject<MouseEvent> ) => {
     // Prevent event bubbling and default behavior
     e.cancelBubble = true;
+    e.evt.preventDefault();
+    e.evt.stopPropagation();
 
     // Get position relative to the stage
     const stage = e.target.getStage();
@@ -323,6 +325,8 @@ export function View() {
   // Handle stage click when not on a node (to clear selection)
   const handleStageClick = useCallback( ( e: KonvaEventObject<MouseEvent> ) => {
     e.cancelBubble = true; // Prevent event bubbling
+    e.evt.preventDefault();
+    e.evt.stopPropagation();
     if ( sourceNode ) {
       setSourceNode( null );
       setMousePos( null );

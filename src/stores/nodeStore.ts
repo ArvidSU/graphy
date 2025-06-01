@@ -58,7 +58,7 @@ export const createNodeStore = ( set: GraphSetState, get: GraphGetState ): NodeS
         return {
           nodes: { ...state.nodes, [ id ]: newNode },
           selectedNodeId: id,
-          toolbarState: { context: "node" },
+          toolbarContext: "node",
           modified: Date.now()
         };
       } else if ( nodeType === "function" ) {
@@ -73,7 +73,7 @@ export const createNodeStore = ( set: GraphSetState, get: GraphGetState ): NodeS
         return {
           nodes: { ...state.nodes, [ id ]: newNode },
           selectedNodeId: id,
-          toolbarState: { context: "node" },
+          toolbarContext: "node",
           modified: Date.now()
         };
       } else {
@@ -139,7 +139,7 @@ export const createNodeStore = ( set: GraphSetState, get: GraphGetState ): NodeS
       set( {
         selectedNodeId: id,
         selectedEdgeId: undefined, // Clear edge selection when selecting a node
-        toolbarState: { context: "node" } // Auto-switch to node context
+        toolbarContext: "node" // Auto-switch to node context
       } );
     } else {
       set( {

@@ -68,7 +68,7 @@ export const createEdgeStore = ( set: GraphSetState, get: GraphGetState ): EdgeS
       set( {
         selectedEdgeId: id,
         selectedNodeId: undefined, // Clear node selection when selecting an edge
-        toolbarState: { context: "edge" } // Auto-switch to edge context
+        toolbarContext: "edge" // Auto-switch to edge context
       } );
     } else {
       set( {

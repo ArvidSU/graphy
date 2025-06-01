@@ -8,10 +8,10 @@ import { RulesToolbar } from "@rules/RulesToolbar";
 import { ToolbarContextSwitcher } from "./ToolbarContextSwitcher";
 
 export function Toolbar() {
-  const { toolbarState } = useGraphStore();
+  const { toolbarContext } = useGraphStore();
 
   const renderToolbar = () => {
-    switch ( toolbarState.context ) {
+    switch ( toolbarContext ) {
       case "node":
         return <NodeToolbar />;
       case "edge":

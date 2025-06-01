@@ -60,20 +60,17 @@ export interface Edge {
   metadata?: MetaData;
 }
 
-export type NodeTypeID = string;
+export type NodeTemplateID = string;
 
-export type NodeTypeTemplate = Omit<Node, "id" | "parentId">;
+export type NodeTemplateType = Omit<Node, "id" | "parentId">;
 
-export interface NodeType {
-  id: NodeTypeID;
+export interface NodeTemplate {
+  id: NodeTemplateID;
   name: string;
-  template: NodeTypeTemplate;
+  template: NodeTemplateType;
 }
 
-export interface ToolbarState {
-  context: "node" | "nodeType" | "edge" | "project" | "rules";
-  id?: NodeID | NodeTypeID | EdgeID | ProjectID
-}
+export type ToolbarContext = "node" | "nodeType" | "edge" | "project" | "rules";
 
 export interface GraphState {
   id: ProjectID;
@@ -86,9 +83,9 @@ export interface GraphState {
   selectedNodeId?: NodeID;
   edges: Record<EdgeID, Edge>;
   selectedEdgeId?: EdgeID;
-  nodeTypes: Record<NodeTypeID, NodeType>;
-  defaultNodeTypeId: NodeTypeID;
-  toolbarState: ToolbarState;
+  nodeTypes: Record<NodeTemplateID, NodeTemplate>;
+  defaultNodeTypeId: NodeTemplateID;
+  toolbarContext: ToolbarContext;
 }
 
 export interface GraphView {

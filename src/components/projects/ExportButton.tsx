@@ -22,7 +22,7 @@ export function ExportButton() {
       selectedEdgeId: graphState.selectedEdgeId,
       nodeTypes: graphState.nodeTypes,
       defaultNodeTypeId: graphState.defaultNodeTypeId,
-      toolbarState: graphState.toolbarState,
+      toolbarContext: graphState.toolbarContext,
     };
 
     // Convert to JSON string with nice formatting

@@ -4,7 +4,7 @@ import { createWithEqualityFn } from "zustand/traditional";
 import { createNodeStore, type NodeInput } from "./nodeStore";
 import { createEdgeStore } from "./edgeStore";
 import { createProjectStore } from "./projectStore";
-import { createNodeTypeStore } from "./nodeTypeStore";
+import { createNodeTemplateStore } from "./nodeTemplateStore";
 import { createToolbarStore } from "./toolbarStore";
 import { newProject } from "./projectConstants";
 import type { GraphStore } from "./storeTypes";
@@ -18,7 +18,7 @@ export const useGraphStore = createWithEqualityFn<GraphStore>( ( set, get ) => (
   ...createNodeStore( set, get ),
   ...createEdgeStore( set, get ),
   ...createProjectStore( set ),
-  ...createNodeTypeStore( set ),
+  ...createNodeTemplateStore( set ),
   ...createToolbarStore( set ),
 
 } ) );

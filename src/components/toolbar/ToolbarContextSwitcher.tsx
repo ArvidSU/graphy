@@ -1,10 +1,10 @@
 import { useGraphStore } from "@stores/useGraphStore";
-import { ToolbarState } from "@graphTypes/graphTypes";
+import { ToolbarContext } from "@graphTypes/graphTypes";
 import { Button } from "@core/Button";
 import { Section } from "@core/Section";
 
 export function ToolbarContextSwitcher() {
-  const { toolbarState, setToolbarState } = useGraphStore();
+  const { toolbarContext, setToolbarContext: setToolbarState } = useGraphStore();
 
   const contexts = [
     { value: "node" as const, label: "Nodes" },
@@ -14,8 +14,8 @@ export function ToolbarContextSwitcher() {
     { value: "rules" as const, label: "Rules" }
   ];
 
-  const handleContextChange = ( context: ToolbarState[ "context" ] ) => {
-    setToolbarState( { context } );
+  const handleContextChange = ( context: ToolbarContext ) => {
+    setToolbarState( context );
   };
 
   return (
@@ -25,7 +25,7 @@ export function ToolbarContextSwitcher() {
           <Button
             key={ value }
             onClick={ () => handleContextChange( value ) }
-            className={ `text-xs px-2 py-1 ${toolbarState.context === value
+            className={ `text-xs px-2 py-1 ${toolbarContext === value
                 ? "bg-blue-500 text-white"
                 : "bg-gray-200 text-gray-700"
               }` }

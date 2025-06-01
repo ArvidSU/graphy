@@ -1,6 +1,6 @@
 import { GraphState } from "@graphTypes/graphTypes";
 import { nanoid } from "nanoid";
-import { newProjectDefaultNode } from "./nodeTypeStore";
+import { newProjectDefaultNode } from "./nodeTemplateStore";
 
 const now = Date.now();
 
@@ -23,7 +23,7 @@ export const newProject: GraphState = {
     }
   },
   defaultNodeTypeId: "default",
-  toolbarState: {
+  toolbarContext: {
     context: "project"
   }
 };

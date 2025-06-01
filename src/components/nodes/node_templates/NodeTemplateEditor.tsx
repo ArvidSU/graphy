@@ -3,7 +3,7 @@ import { Button, CopyButton, DeleteButton } from "@core/Button";
 import { Input } from "@core/Input";
 import { useGraphStore } from "@stores/useGraphStore";
 import { ColorEditor } from "@nodes/NodeEditor";
-import { NodeTypeID } from "@graphTypes/graphTypes";
+import { NodeTemplateID } from "@graphTypes/graphTypes";
 import { Expander } from "@core/Expander";
 
 export function NodeTypeEditor() {
@@ -28,8 +28,8 @@ export function NodeTypeEditor() {
   );
 }
 
-function NodeTypeItem( props: { id: NodeTypeID } ) {
-  const { nodeTypes, deleteNodeType, setDefaultNodeType, defaultNodeTypeId, updateNodeType, saveNodeAsType } = useGraphStore();
+function NodeTypeItem( props: { id: NodeTemplateID } ) {
+  const { nodeTypes, deleteNodeTemplate: deleteNodeType, setDefaultNodeTemplate: setDefaultNodeType, defaultNodeTypeId, updateNodeTemplate: updateNodeType, saveNodeAsTemplate: saveNodeAsType } = useGraphStore();
   const nodeType = nodeTypes[ props.id ];
 
   const handleNameChange = ( newName: string ) => {

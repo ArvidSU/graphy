@@ -26,7 +26,7 @@ export const createProjectStore = ( set: GraphSetState ): ProjectStore => ( {
       modified: importedState.modified,
       nodeTypes: importedState.nodeTypes,
       defaultNodeTypeId: importedState.defaultNodeTypeId,
-      toolbarState: importedState.toolbarState || { context: "project" as const }
+      toolbarContext: importedState.toolbarContext || "project"
     };
     set( stateToLoad );
     console.debug( "Loaded graph state with name:", importedState.name );

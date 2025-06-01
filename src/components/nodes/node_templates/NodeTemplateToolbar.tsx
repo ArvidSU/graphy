@@ -8,9 +8,9 @@ export function NodeTypeToolbar() {
   const {
     nodeTypes,
     defaultNodeTypeId,
-    setDefaultNodeType,
-    deleteNodeType,
-    updateNodeType
+    setDefaultNodeTemplate: setDefaultNodeType,
+    deleteNodeTemplate: deleteNodeType,
+    updateNodeTemplate: updateNodeType
   } = useGraphStore();
 
   const nodeTypesArray = Object.values( nodeTypes );

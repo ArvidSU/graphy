@@ -1,9 +1,9 @@
-import { NodeType, NodeTypeID, NodeTypeTemplate, GraphState } from "@graphTypes/graphTypes";
+import { NodeTemplate, NodeTemplateID, NodeTemplateType, GraphState } from "@graphTypes/graphTypes";
 import { nanoid } from "nanoid";
 import { GraphSetState } from "./storeTypes";
 
 // Default node template that was in the original useGraphStore
-export const newProjectDefaultNode: NodeTypeTemplate = {
+export const newProjectDefaultNode: NodeTemplateType = {
   type: "key_value",
   label: "Node",
   metadata: {},
@@ -18,19 +18,19 @@ export const newProjectDefaultNode: NodeTypeTemplate = {
   },
 };
 
-export interface NodeTypeStore {
-  saveNodeAsType: ( node: NodeTypeTemplate, name: string ) => NodeTypeID;
-  deleteNodeType: ( id: NodeTypeID ) => void;
-  setDefaultNodeType: ( id: NodeTypeID | undefined ) => void;
-  updateNodeType: ( id: NodeTypeID, nodeType: NodeType ) => void;
+export interface NodeTemplateStore {
+  saveNodeAsTemplate: ( node: NodeTemplateType, name: string ) => NodeTemplateID;
+  deleteNodeTemplate: ( id: NodeTemplateID ) => void;
+  setDefaultNodeTemplate: ( id: NodeTemplateID | undefined ) => void;
+  updateNodeTemplate: ( id: NodeTemplateID, nodeType: NodeTemplate ) => void;
 }
 
-export const createNodeTypeStore = ( set: GraphSetState ): NodeTypeStore => ( {
-  saveNodeAsType: ( node, name ) => {
+export const createNodeTemplateStore = ( set: GraphSetState ): NodeTemplateStore => ( {
+  saveNodeAsTemplate: ( node, name ) => {
     const id = nanoid();
     set( ( state: GraphState ) => {
       const { ...nodeTemplate } = node;
-      const nodeType: NodeType = {
+      const nodeType: NodeTemplate = {
         id,
         name,
         template: nodeTemplate
@@ -44,7 +44,7 @@ export const createNodeTypeStore = ( set: GraphSetState ): NodeTypeStore => ( {
     return id;
   },
 
-  deleteNodeType: ( id ) => {
+  deleteNodeTemplate: ( id ) => {
     set( ( state: GraphState ) => {
       const newNodeTypes = { ...state.nodeTypes };
       if ( !newNodeTypes[ id ] ) {
@@ -67,7 +67,7 @@ export const createNodeTypeStore = ( set: GraphSetState ): NodeTypeStore => ( {
     } );
   },
 
-  setDefaultNodeType: ( id ) => {
+  setDefaultNodeTemplate: ( id ) => {
     set( {
       defaultNodeTypeId: id,
       modified: Date.now()
@@ -75,7 +75,7 @@ export const createNodeTypeStore = ( set: GraphSetState ): NodeTypeStore => ( {
     console.debug( "Set default node type:", id );
   },
 
-  updateNodeType: ( id, nodeType ) => {
+  updateNodeTemplate: ( id, nodeType ) => {
     set( ( state: GraphState ) => {
       const { nodeTypes } = state;
       if ( !nodeTypes[ id ] ) {

@@ -72,7 +72,7 @@ export function NodeToolbar() {
 
 function SelectedNode( props: { id: string } ) {
   const selectedState = useNode( props.id );
-  const { saveNodeAsType } = useGraphStore();
+  const { saveNodeAsTemplate: saveNodeAsType } = useGraphStore();
   if ( !selectedState ) return null;
 
   const { edges, node, update } = selectedState;
