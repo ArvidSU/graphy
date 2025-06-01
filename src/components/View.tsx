@@ -244,8 +244,8 @@ export function View() {
   const handleStageDoubleClick = useCallback( ( e: KonvaEventObject<MouseEvent> ) => {
     // Prevent event bubbling and default behavior
     e.cancelBubble = true;
-    e.evt.preventDefault();
-    e.evt.stopPropagation();
+    e.evt.stopPropagation(); // Stop propagation to Konva
+    e.evt.preventDefault(); // Prevent default behavior
 
     // Get position relative to the stage
     const stage = e.target.getStage();
@@ -325,16 +325,17 @@ export function View() {
   // Handle stage click when not on a node (to clear selection)
   const handleStageClick = useCallback( ( e: KonvaEventObject<MouseEvent> ) => {
     e.cancelBubble = true; // Prevent event bubbling
-    e.evt.preventDefault();
-    e.evt.stopPropagation();
+    e.evt.stopPropagation(); // Stop propagation to Konva
+    e.evt.preventDefault(); // Prevent default behavior
+
     if ( sourceNode ) {
       setSourceNode( null );
       setMousePos( null );
-    } else {
+    } else if ( selectedNodeId || selectedEdgeId ) {
       setSelectedNodeId( undefined );
       setSelectedEdgeId( undefined );
     }
-  }, [ sourceNode, setSelectedNodeId, setSelectedEdgeId ] );
+  }, [ sourceNode, selectedNodeId, selectedEdgeId, setSelectedNodeId, setSelectedEdgeId ] );
 
   return (
     <div className="flex-1 bg-white flex items-center justify-center relative">
