@@ -1,6 +1,6 @@
 import { GraphState } from "@graphTypes/graphTypes";
 import { nanoid } from "nanoid";
-import { newProject } from "@stores/useGraphStore";
+import { newProject } from "@stores/projectConstants";
 
 /**
  * Gets projects from localStorage and sorts them by modification date (newest first)

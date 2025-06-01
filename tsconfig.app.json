@@ -30,6 +30,9 @@
       "@stores/*": [
         "src/stores/*"
       ],
+      "@stores": [
+        "src/stores/index"
+      ],
       "@graphTypes/*": [
         "src/types/*"
       ],

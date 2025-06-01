@@ -1,6 +1,7 @@
 import { Bar } from "@core/Bar";
 import { Section } from "@core/Section";
-import { useGraphStore, newProject } from "@stores/useGraphStore";
+import { useGraphStore } from "@stores/useGraphStore";
+import { newProject } from "@stores/projectConstants";
 import { nanoid } from "nanoid";
 import { Input } from "@core/Input";
 import { saveProjectToLocalStorage } from "@utils/projectUtils";

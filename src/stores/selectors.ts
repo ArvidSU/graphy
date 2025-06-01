@@ -66,3 +66,10 @@ export function selectKVPMetadata( id: MetaDataID ) {
     };
   };
 }
+
+// Export selectors as a single object for easier importing
+export const selectors = {
+  localGraphView: selectLocalGraphView,
+  nodeAdjacentData: selectNodeAdjacentData,
+  kvpMetadata: selectKVPMetadata
+};

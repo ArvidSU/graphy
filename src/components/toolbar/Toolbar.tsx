@@ -1,5 +1,5 @@
 import { Bar } from "@core/Bar";
-import { useGraphStore } from "@stores/useGraphStore";
+import { useGraphStore } from "@stores";
 import { NodeToolbar } from "@nodes/NodeToolbar";
 import { EdgeToolbar } from "@edges/EdgeToolbar";
 import { NodeTypeToolbar } from "@nodes/node_templates/NodeTemplateToolbar";

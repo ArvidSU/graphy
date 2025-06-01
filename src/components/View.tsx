@@ -243,8 +243,7 @@ export function View() {
   // Handle double click on the stage to add a new node
   const handleStageDoubleClick = useCallback( ( e: KonvaEventObject<MouseEvent> ) => {
     // Prevent event bubbling and default behavior
-    e.evt.stopPropagation();
-    e.evt.preventDefault();
+    e.cancelBubble = true;
 
     // Get position relative to the stage
     const stage = e.target.getStage();
@@ -322,7 +321,8 @@ export function View() {
   }, [ setSelectedEdgeId ] );
 
   // Handle stage click when not on a node (to clear selection)
-  const handleStageClick = useCallback( () => {
+  const handleStageClick = useCallback( ( e: KonvaEventObject<MouseEvent> ) => {
+    e.cancelBubble = true; // Prevent event bubbling
     if ( sourceNode ) {
       setSourceNode( null );
       setMousePos( null );

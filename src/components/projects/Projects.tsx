@@ -1,4 +1,5 @@
-import { useGraphStore, newProject } from "@stores/useGraphStore";
+import { useGraphStore } from "@stores/useGraphStore";
+import { newProject } from "@stores/projectConstants";
 import { GraphState } from "@graphTypes/graphTypes";
 import { Button, DeleteButton, CopyButton } from "@core/Button";
 import { nanoid } from "nanoid";
