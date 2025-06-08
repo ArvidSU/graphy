@@ -5,9 +5,10 @@ import { Input } from "@core/Input";
 import { Button, DeleteButton } from "@core/Button";
 import { Expander } from "@core/Expander";
 import { Edges } from "@edges/Edges";
-import { KVPAvailableReferences, KVPMetadataEditor } from "@nodes/key_value_pair/KVPEditor";
 import { NodeEditor } from "@nodes/NodeEditor";
 import { useNode, useLocalGraph } from "@hooks/useGraph";
+import { KVPToolbar } from "@nodes/key_value_pair/KVPToolbar";
+import { FunctionToolbar } from "@nodes/function/FunctionToolbar";
 
 export function NodeToolbar() {
   const {
@@ -83,8 +84,7 @@ function SelectedNode( props: { id: string } ) {
         <Section bordered padding={ 2 } title={ "Selected Node" } boldTitle={ true }>
           <NodeEditor node={ node } onChange={ update } />
           <Edges edges={ edges } />
-          <MetaDataEditor node={ node } />
-          <AvailableReferences node={ node } />
+          <NodeTypeSpecificToolbar node={ node } />
         </Section>
       </div>
       <Section title="Actions" bordered className="mt-4 flex-shrink-0">
@@ -100,41 +100,23 @@ function SelectedNode( props: { id: string } ) {
   )
 }
 
-function NotImplemented( props: { item?: string } ) {
-  return (
-    <Section title={ props.item } bordered className="mt-2">
-      <p>Not implemented</p>
-    </Section>
-  )
-}
-
-function AvailableReferences( props: { node: Node } ) {
+function NodeTypeSpecificToolbar( props: { node: Node } ) {
   const { node } = props;
-  if ( !node.id ) return null;
+
   switch ( node.type ) {
     case "function":
-      return ( <NotImplemented item="Function" /> )
+      return <FunctionToolbar node={ node } />;
     case "key_value":
+      return <KVPToolbar node={ node } />;
+    default: {
+      // Type narrowing for any future node types
+      const _exhaustiveCheck: never = node;
       return (
-        <KVPAvailableReferences id={ node.id } />
-      )
-    default:
-      return ( <NotImplemented item="Unknown" /> )
-  }
-}
-
-function MetaDataEditor( props: { node: Node } ) {
-  const { node } = props;
-  if ( !node ) return null;
-  switch ( node.type ) {
-    case "function":
-      return ( <NotImplemented /> )
-    case "key_value":
-      return (
-        <KVPMetadataEditor { ...node } />
-      )
-    default:
-      return ( <NotImplemented /> )
+        <Section title="Node Specific" bordered className="mt-2">
+          <p>Not implemented for node type: { String( _exhaustiveCheck ) }</p>
+        </Section>
+      );
+    }
   }
 }
 

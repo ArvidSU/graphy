@@ -1,3 +1,5 @@
+import { Operation } from './operationTypes';
+
 export type NodeID = string;
 export type EdgeID = string;
 export type ProjectID = string;
@@ -22,12 +24,7 @@ export type KeyValuePairMetadata = {
   value: string;
 };
 
-export type FunctionMetaData = {
-  function: string;
-  params: KeyValuePairMetadata[];
-}
-
-export type MetaDataFunction = Record<MetaDataID, FunctionMetaData>;
+export type MetaDataFunction = Record<MetaDataID, Operation>;
 
 export type MetaDataKeyValue = Record<MetaDataID, KeyValuePairMetadata>;
 

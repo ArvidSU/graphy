@@ -244,8 +244,8 @@ export function View() {
   const handleStageDoubleClick = useCallback( ( e: KonvaEventObject<MouseEvent> ) => {
     // Prevent event bubbling and default behavior
     e.cancelBubble = true;
-    e.evt.stopPropagation(); // Stop propagation to Konva
-    e.evt.preventDefault(); // Prevent default behavior
+    //e.evt.stopPropagation(); // Stop propagation to Konva
+    //e.evt.preventDefault(); // Prevent default behavior
 
     // Get position relative to the stage
     const stage = e.target.getStage();
