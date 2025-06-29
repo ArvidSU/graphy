@@ -1,14 +1,16 @@
 import { Section } from "@core/Section";
 import { useGraphStore } from "@stores/useGraphStore";
-import { Node } from "@graphTypes/graphTypes";
 import { Input } from "@core/Input";
 import { Button, DeleteButton } from "@core/Button";
 import { Expander } from "@core/Expander";
 import { Edges } from "@edges/Edges";
 import { NodeEditor } from "@nodes/NodeEditor";
 import { useNode, useLocalGraph } from "@hooks/useGraph";
-import { KVPToolbar } from "@nodes/key_value_pair/KVPToolbar";
-import { FunctionToolbar } from "@nodes/function/FunctionToolbar";
+import { OperationEditor } from "../operation/OperationEditor";
+import { NodeID, Node } from "@/types/graphTypes";
+import { isNode } from "@/logic/graphLogic";
+import { Operation } from "@/types/operationTypes";
+import { KVPEditor } from "./key_value_pair/KVPEditor";
 
 export function NodeToolbar() {
   const {
@@ -73,23 +75,74 @@ export function NodeToolbar() {
 
 function SelectedNode( props: { id: string } ) {
   const selectedState = useNode( props.id );
-  const { saveNodeAsTemplate: saveNodeAsType } = useGraphStore();
-  if ( !selectedState ) return null;
+  const { saveNodeAsTemplate } = useGraphStore();
 
-  const { edges, node, update } = selectedState;
+  const { edges, node, update, incomingNodes, children, parent } = selectedState;
+
+  // Get all available nodes for inputs
+  const availableInputNodes: Record<NodeID, Node> = [
+    ...( [ node ] ),
+    ...( incomingNodes || [] ),
+    ...( children || [] ),
+    ...( parent ? [ parent ] : [] )
+  ].filter( Boolean ).reduce( ( acc, n ) => {
+    acc[ n.id ] = n;
+    return acc;
+  }, {} as Record<string, Node> );
+
+  // For now only allow output to be the node itself
+  const availableOutputNodes: Record<NodeID, Node> = [
+    ...( [ node ] ),
+    //...( outgoingNodes || [] ),
+    //...( children || [] ),
+    //...( parent ? [ parent ] : [] )
+  ].filter( Boolean ).reduce( ( acc, n ) => {
+    acc[ n.id ] = n;
+    return acc;
+  }, {} as Record<string, Node> );
+
+  const onOperationOutput = ( newContext: Record<string, unknown> ) => {
+    // Extract and update each changed node from the context
+    Object.values( newContext as Record<string, unknown> ).forEach( nodeCandidate => {
+      if ( isNode( nodeCandidate ) && nodeCandidate.id === node.id ) { // Constrain to current node for now
+        update( nodeCandidate );
+      }
+    } );
+  }
+
+  const onOperationChange = ( operation: Operation, change: string ) => {
+    switch ( change ) {
+      case "delete": {
+        const newOperations = { ...node.operations };
+        delete newOperations[ operation.id ];
+        return update( {
+          ...node,
+          operations: newOperations
+        } );
+      }
+      case "save":
+        return update( {
+          ...node,
+          operations: {
+            ...node.operations,
+            [ operation.id ]: operation
+          }
+        } );
+      default:
+        console.warn( `Unknown operation change: ${change}` );
+        return;
+    }
+  }
 
   return (
     <div className="flex flex-col flex-1 min-h-0 mt-4">
-      <div className="flex-1">
-        <Section bordered padding={ 2 } title={ "Selected Node" } boldTitle={ true }>
-          <NodeEditor node={ node } onChange={ update } />
-          <Edges edges={ edges } />
-          <NodeTypeSpecificToolbar node={ node } />
-        </Section>
-      </div>
+      <NodeEditor node={ node } onChange={ update } />
+      <Edges edges={ edges } />
+      <OperationEditor withOperations={ node } inputContext={ availableInputNodes } outputContext={ availableOutputNodes } onOutput={ onOperationOutput } onChange={ onOperationChange } />
+      <KVPEditor node={ node } />
       <Section title="Actions" bordered className="mt-4 flex-shrink-0">
         <Button
-          onClick={ () => saveNodeAsType( node, node.label ) }
+          onClick={ () => saveNodeAsTemplate( node, node.label ) }
           className="w-full"
           style={ { backgroundColor: node.shape.color, color: "#fff" } }
         >
@@ -99,24 +152,3 @@ function SelectedNode( props: { id: string } ) {
     </div>
   )
 }
-
-function NodeTypeSpecificToolbar( props: { node: Node } ) {
-  const { node } = props;
-
-  switch ( node.type ) {
-    case "function":
-      return <FunctionToolbar node={ node } />;
-    case "key_value":
-      return <KVPToolbar node={ node } />;
-    default: {
-      // Type narrowing for any future node types
-      const _exhaustiveCheck: never = node;
-      return (
-        <Section title="Node Specific" bordered className="mt-2">
-          <p>Not implemented for node type: { String( _exhaustiveCheck ) }</p>
-        </Section>
-      );
-    }
-  }
-}
-

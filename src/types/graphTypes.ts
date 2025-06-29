@@ -24,37 +24,19 @@ export type KeyValuePairMetadata = {
   value: string;
 };
 
-export type MetaDataFunction = Record<MetaDataID, Operation>;
-
-export type MetaDataKeyValue = Record<MetaDataID, KeyValuePairMetadata>;
-
-export type MetaData = MetaDataFunction | MetaDataKeyValue;
-
-type NodeBase = {
+export type Node = {
   id: NodeID;
   label: string;
   shape: NodeShape;
   parentId?: NodeID;
+  attributes?: Record<MetaDataID, KeyValuePairMetadata>;
+  operations?: Record<MetaDataID, Operation>;
 };
-
-export type FunctionNode = NodeBase & {
-  type: "function";
-  metadata: MetaDataFunction;
-};
-
-export type KeyValueNode = NodeBase & {
-  type: "key_value";
-  metadata: MetaDataKeyValue;
-};
-
-export type Node = FunctionNode | KeyValueNode;
-
 export interface Edge {
   id: EdgeID;
   label: string;
   source: NodeID;
   target: NodeID;
-  metadata?: MetaData;
 }
 
 export type NodeTemplateID = string;

@@ -49,19 +49,20 @@ export function selectNodeAdjacentData( nodeId: NodeID, state: GraphState ): {
   return { node, parent, edges, children, incomingNodes, outgoingNodes };
 }
 
-export function selectKVPMetadata( id: MetaDataID ) {
+export function selectAttributes( id: MetaDataID ) {
   return ( state: GraphStore ) => {
     const node = Object.values( state.nodes ).find( ( n ) =>
-      Object.prototype.hasOwnProperty.call( n.metadata, id )
+      Object.prototype.hasOwnProperty.call( n.attributes, id )
     );
 
-    if ( !node || node.type !== "key_value" ) return undefined;
+    if ( !node || !node.attributes || !node.attributes[ id ] ) return undefined;
 
-    const metadata = node.metadata[ id ];
+    const attributes = node.attributes[ id ];
+
     return {
       id,
-      key: metadata.key,
-      value: metadata.value,
+      key: attributes.key,
+      value: attributes.value,
       belongsTo: node,
     };
   };
@@ -71,5 +72,5 @@ export function selectKVPMetadata( id: MetaDataID ) {
 export const selectors = {
   localGraphView: selectLocalGraphView,
   nodeAdjacentData: selectNodeAdjacentData,
-  kvpMetadata: selectKVPMetadata
+  kvpMetadata: selectAttributes
 };

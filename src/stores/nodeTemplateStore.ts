@@ -4,9 +4,7 @@ import { GraphSetState } from "./storeTypes";
 
 // Default node template that was in the original useGraphStore
 export const newProjectDefaultNode: NodeTemplateType = {
-  type: "key_value",
   label: "Node",
-  metadata: {},
   shape: {
     position: { x: 0, y: 0 },
     radius: 30,

@@ -1,26 +1,15 @@
 import {
-  Node, NodeID, FunctionNode, KeyValueNode, NodeShape,
-  MetaDataKeyValue, MetaDataFunction, GraphState
+  Node, NodeID, GraphState
 } from "@graphTypes/graphTypes";
 import { nanoid } from "nanoid";
 import { GraphSetState, GraphGetState } from "./storeTypes";
 
-// Base input type that allows partial overrides of any node properties except id
-export type NodeInputBase = {
-  parentId?: NodeID;
-  label?: string;
-  shape?: Partial<NodeShape>;
+// Create a deep partial type for nested objects
+type DeepPartial<T> = {
+  [ P in keyof T ]?: T[ P ] extends object ? DeepPartial<T[ P ]> : T[ P ];
 };
 
-// Specific input types when you want to explicitly specify the type
-export type InputFunctionNode = NodeInputBase & { type: "function"; metadata?: MetaDataFunction };
-export type InputKeyValueNode = NodeInputBase & { type: "key_value"; metadata?: MetaDataKeyValue };
-
-// Union type that allows either explicit typing or using default template
-export type NodeInput =
-  | NodeInputBase  // Uses default node type template
-  | InputFunctionNode  // Explicit function node
-  | InputKeyValueNode; // Explicit key-value node
+export type NodeInput = DeepPartial<Node>;
 
 export interface NodeStore {
   addNode: ( partial: NodeInput ) => NodeID;
@@ -30,6 +19,25 @@ export interface NodeStore {
   setCurrentRootId: ( id: NodeID | undefined ) => void;
 }
 
+// Helper function to deep merge objects
+const deepMerge = <T extends object>( target: T, source: DeepPartial<T> ): T => {
+  const result = { ...target };
+
+  for ( const key in source ) {
+    const sourceValue = source[ key ];
+    const targetValue = result[ key ];
+
+    if ( sourceValue && typeof sourceValue === 'object' && !Array.isArray( sourceValue ) &&
+      targetValue && typeof targetValue === 'object' && !Array.isArray( targetValue ) ) {
+      result[ key ] = deepMerge( targetValue, sourceValue );
+    } else if ( sourceValue !== undefined ) {
+      result[ key ] = sourceValue as T[ Extract<keyof T, string> ];
+    }
+  }
+
+  return result;
+};
+
 export const createNodeStore = ( set: GraphSetState, get: GraphGetState ): NodeStore => ( {
   addNode: ( partial: NodeInput ) => {
     const id = nanoid();
@@ -37,48 +45,22 @@ export const createNodeStore = ( set: GraphSetState, get: GraphGetState ): NodeS
     const template = nodeTypes[ defaultNodeTypeId ].template;
 
     set( ( state: GraphState ) => {
-      // Determine the node type to use
-      const nodeType = 'type' in partial ? partial.type : template.type;
+      // Deep merge the template with the partial input
+      const newNode: Node = deepMerge(
+        { ...template, id },
+        partial
+      ) as Node;
 
-      // Merge default shape with any provided shape properties
-      const mergedShape: NodeShape = {
-        ...template.shape,
-        ...( partial.shape || {} ),
+      // Ensure required fields are set
+      newNode.id = id;
+      if ( !newNode.label ) newNode.label = template.label;
+
+      return {
+        nodes: { ...state.nodes, [ id ]: newNode },
+        selectedNodeId: id,
+        toolbarContext: "node",
+        modified: Date.now()
       };
-
-      if ( nodeType === "key_value" ) {
-        const newNode: KeyValueNode = {
-          id,
-          type: nodeType,
-          label: partial.label || template.label,
-          parentId: partial.parentId,
-          shape: mergedShape,
-          metadata: ( 'metadata' in partial ? partial.metadata : template.metadata ) as MetaDataKeyValue || {},
-        };
-        return {
-          nodes: { ...state.nodes, [ id ]: newNode },
-          selectedNodeId: id,
-          toolbarContext: "node",
-          modified: Date.now()
-        };
-      } else if ( nodeType === "function" ) {
-        const newNode: FunctionNode = {
-          id,
-          type: nodeType,
-          label: partial.label || template.label,
-          parentId: partial.parentId,
-          shape: mergedShape,
-          metadata: ( 'metadata' in partial ? partial.metadata : template.metadata ) as MetaDataFunction || {},
-        };
-        return {
-          nodes: { ...state.nodes, [ id ]: newNode },
-          selectedNodeId: id,
-          toolbarContext: "node",
-          modified: Date.now()
-        };
-      } else {
-        throw new Error( `Unsupported node type: ${nodeType}` );
-      }
     } );
     console.debug( "Added node:", partial.label || template.label, id );
     return id; // Return the ID to allow chaining or referencing

@@ -1,5 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faClone, faWrench } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faClone, faWrench, faPlus, faTerminal, faFloppyDisk, faTurnUp, faXmark } from "@fortawesome/free-solid-svg-icons";
+
+type ButtonProps = {
+  children: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+  style?: React.CSSProperties;
+}
 
 export function Button( {
   children,
@@ -8,22 +17,16 @@ export function Button( {
   disabled,
   type = "button",
   style = {},
-}: {
-  children: React.ReactNode;
-  className?: string;
-  onClick?: () => void;
-  disabled?: boolean;
-    type?: "button" | "submit" | "reset";
-    style?: React.CSSProperties;
-} ) {
+}: ButtonProps ) {
   // Extract any bg-* classes from the provided className
   const hasBgClass = className?.includes( 'bg-' );
-
+  const textClass = "text-sm font-medium text-white-500 ";
+  const borderClass = "border border-gray-300 rounded-md ";
   return (
     <button
       type={ type }
-      className={
-        `rounded-md border border-gray-300 ${!hasBgClass ? 'bg-indigo-200' : ''} px-4 py-2 text-sm font-medium text-gray-700 shadow-sm ${!hasBgClass ? 'hover:bg-gray-50' : ''} ${disabled ? '!bg-gray-500' : ''} ` +
+      className={ textClass + borderClass +
+        ` ${!hasBgClass ? 'bg-indigo-200' : ''} px-4 py-2 shadow-sm ${disabled ? '!bg-gray-500 !cursor-not-allowed ' : ''} ` +
         ( className || "" )
       }
       onClick={ onClick }
@@ -35,23 +38,11 @@ export function Button( {
   );
 }
 
-export function DeleteButton( {
-  onClick,
-  className,
-  disabled,
-}: {
-  onClick: () => void;
-  className?: string;
-  disabled?: boolean;
-} ) {
+export function DeleteButton( props: Partial<ButtonProps> ) {
   return (
     <Button
-      className={
-        "text-sm text-red-500 " +
-        ( className || "" )
-      }
-      onClick={ onClick }
-      disabled={ disabled }
+      className="text-red-500 "
+      { ...props }
     >
       <FontAwesomeIcon icon={ faTrash } />
     </Button>
@@ -63,12 +54,12 @@ export function CopyButton( {
   className,
 }: {
   onClick: () => void;
-  className?: string;
+    className?: string;
 } ) {
   return (
     <Button
       className={
-        "text-sm text-blue-500 " +
+        "text-blue-500 " +
         ( className || "" )
       }
       onClick={ onClick }
@@ -82,18 +73,72 @@ export function ToolButton( {
   onClick,
   className,
 }: {
-  onClick?: () => void;
-  className?: string;
+    onClick?: () => void;
+    className?: string;
 } ) {
   return (
     <Button
       className={
-        "text-sm text-gray-500 " +
         ( className || "" )
       }
       onClick={ onClick }
     >
       <FontAwesomeIcon icon={ faWrench } />
+    </Button>
+  );
+}
+
+export function AddButton( props: Partial<ButtonProps> ) {
+  return (
+    <Button
+      className="bg-green-500 text-white"
+      { ...props }
+    >
+      <FontAwesomeIcon icon={ faPlus } />
+    </Button>
+  );
+}
+
+export function ExecuteButton( props: Partial<ButtonProps> ) {
+  return (
+    <Button
+      className="bg-blue-500 text-white"
+      { ...props }
+    >
+      <FontAwesomeIcon icon={ faTerminal } />
+    </Button>
+  );
+}
+
+export function SaveButton( props: Partial<ButtonProps> ) {
+  return (
+    <Button
+      className="bg-green-500 text-white"
+      { ...props }
+    >
+      <FontAwesomeIcon icon={ faFloppyDisk } />
+    </Button>
+  );
+}
+
+export function TurnUpButton( props: Partial<ButtonProps> ) {
+  return (
+    <Button
+      className="bg-yellow-500 text-white"
+      { ...props }
+    >
+      <FontAwesomeIcon icon={ faTurnUp } />
+    </Button>
+  );
+}
+
+export function CloseButton( props: Partial<ButtonProps> ) {
+  return (
+    <Button
+      className="bg-yellow-500 text-white"
+      { ...props }
+    >
+      <FontAwesomeIcon icon={ faXmark } />
     </Button>
   );
 }

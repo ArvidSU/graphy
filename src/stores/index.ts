@@ -39,5 +39,5 @@ export type { NodeInput } from './useGraphStore';
 export {
   selectLocalGraphView,
   selectNodeAdjacentData,
-  selectKVPMetadata
+  selectAttributes as selectKVPMetadata
 } from './selectors';

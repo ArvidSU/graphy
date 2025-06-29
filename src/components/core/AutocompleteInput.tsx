@@ -18,6 +18,7 @@ export function AutocompleteInput( {
   disabled = false,
   maxSuggestions = 10,
   clearAfterSave = false,
+  separator,
 }: {
   id?: string;
   suggestions: string[];
@@ -35,6 +36,7 @@ export function AutocompleteInput( {
   disabled?: boolean;
   maxSuggestions?: number;
   clearAfterSave?: boolean;
+    separator?: string;
 } ) {
   const [ inputValue, setInputValue ] = useState( value || defaultValue || "" );
   const [ filteredSuggestions, setFilteredSuggestions ] = useState<string[]>( [] );
@@ -48,9 +50,14 @@ export function AutocompleteInput( {
   useEffect( () => {
     // If input has value, filter based on it
     if ( inputValue ) {
+      // When using separator, filter based on the last segment after the separator
+      const searchValue = separator
+        ? inputValue.split( separator ).pop()?.trim() || ""
+        : inputValue;
+
       const filtered = suggestions
         .filter( suggestion =>
-          suggestion.toLowerCase().includes( inputValue.toLowerCase() ) )
+          suggestion.toLowerCase().includes( searchValue.toLowerCase() ) )
         .slice( 0, maxSuggestions );
       setFilteredSuggestions( filtered );
     } else {
@@ -60,7 +67,7 @@ export function AutocompleteInput( {
       }
     }
     setHighlightedIndex( -1 );
-  }, [ inputValue, suggestions, maxSuggestions, showSuggestions ] );
+  }, [ inputValue, suggestions, maxSuggestions, showSuggestions, separator ] );
 
   // Update internal value when external value changes
   useEffect( () => {
@@ -134,11 +141,28 @@ export function AutocompleteInput( {
       else if ( e.key === "Enter" && highlightedIndex >= 0 ) {
         e.preventDefault();
         const selected = filteredSuggestions[ highlightedIndex ];
-        setInputValue( selected );
+
+        let newValue: string;
+        if ( separator ) {
+          // When separator is defined, append the suggestion to existing value
+          const parts = inputValue.split( separator );
+          parts[ parts.length - 1 ] = selected; // Replace the last part with the selected suggestion
+          newValue = parts.join( separator );
+
+          // If there are existing parts, add the separator for the next input
+          if ( parts.length > 1 || inputValue.includes( separator ) ) {
+            newValue += separator + " ";
+          }
+        } else {
+          // Normal behavior: replace the entire input value
+          newValue = selected;
+        }
+
+        setInputValue( newValue );
         setShowSuggestions( false );
-        if ( onSelect ) onSelect( selected );
+        if ( onSelect ) onSelect( newValue );
         if ( onSave && saveOn?.includes( "enter" ) ) {
-          onSave( selected );
+          onSave( newValue );
           if ( clearAfterSave ) setInputValue( "" );
         }
       }
@@ -156,11 +180,28 @@ export function AutocompleteInput( {
   };
 
   const handleSuggestionClick = ( suggestion: string ) => {
-    setInputValue( suggestion );
+    let newValue: string;
+
+    if ( separator ) {
+      // When separator is defined, append the suggestion to existing value
+      const parts = inputValue.split( separator );
+      parts[ parts.length - 1 ] = suggestion; // Replace the last part with the selected suggestion
+      newValue = parts.join( separator );
+
+      // If there are existing parts, add the separator for the next input
+      if ( parts.length > 1 || inputValue.includes( separator ) ) {
+        newValue += separator + " ";
+      }
+    } else {
+      // Normal behavior: replace the entire input value
+      newValue = suggestion;
+    }
+
+    setInputValue( newValue );
     setShowSuggestions( false );
-    if ( onSelect ) onSelect( suggestion );
+    if ( onSelect ) onSelect( newValue );
     if ( onSave ) {
-      onSave( suggestion );
+      onSave( newValue );
       if ( clearAfterSave ) setInputValue( "" );
     }
   };

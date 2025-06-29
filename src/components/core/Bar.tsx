@@ -110,10 +110,12 @@ export function Bar( {
   return (
     <div
       ref={ barRef }
-      className={ `relative p-4 bg-gray-100 ${borderClass} border-gray-300 ${layoutClass} ${className}` }
+      className={ `h-full relative p-4 bg-gray-100 ${borderClass} border-gray-300 ${layoutClass} ${className} ` }
       style={ { width: `${width}%` } }
     >
-      { children }
+      <div className="overflow-y-auto overflow-y-visible relative h-full flex flex-col">
+        { children }
+      </div>
       { resizeHandle }
     </div>
   );

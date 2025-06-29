@@ -1,16 +1,19 @@
-export type ObjectWithId = { id: string };
+import { MetaDataID } from "./graphTypes";
 
 export interface Reference {
-  name: string; // Name of the input, user-friendly reference to the resolved value
-  index: string; // Used as index to reference the object in the graph
-  key: string; // Key of the object to reference
-  next?: Reference; // Optional next input for referencing nested properties
+  id: string; // Unique identifier for the reference
+  name: string; // Name of the reference, user-friendly reference to the resolved value
+  path: ( keyof Record<string, unknown> )[]; // Path of keys to reference the nested property
 }
 
 export interface Operation {
-  id: string;
+  id: MetaDataID;
   description: string;
-  inputs?: Reference[];
+  inputs: Record<MetaDataID, Reference>;
   expression: string;
-  output?: Reference;
+  outputs: Record<MetaDataID, Reference>;
+  active?: boolean;
+  lastExecuted?: number;
 }
+
+export type WithOperations = { operations?: Record<string, Operation>; };

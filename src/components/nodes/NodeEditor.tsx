@@ -1,5 +1,4 @@
 import { Node } from "@graphTypes/graphTypes";
-import { AutocompleteInput } from "@core/AutocompleteInput";
 import { Section } from "@core/Section";
 
 export function NodeEditor( props: { node: Node, onChange: ( node: Node ) => void } ) {
@@ -51,41 +50,8 @@ export function NodeEditor( props: { node: Node, onChange: ( node: Node ) => voi
         <ColorEditor color={ node.shape.border.color } onChange={ handleBorderColorChange } />
       </div>
       <RadiusEditor radius={ node.shape.radius } onChange={ handleRadiusChange } />
-      <TypeEditor node={ node } onChange={ onChange } />
     </Section>
   )
-}
-
-export function TypeEditor( props: { node: Node, onChange: ( updatedNode: Node ) => void } ) {
-  const { node, onChange } = props;
-  const options = [ "function", "key_value" ];
-
-  return (
-    <AutocompleteInput
-      id="node-type"
-      placeholder={ "Type: " + node.type }
-      suggestions={ options }
-      saveOn={ [ "enter" ] }
-      onSave={ ( value ) => {
-        const newType = value;
-        if ( !options.includes( newType ) ) return;
-        let metadata = node.metadata;
-        if ( newType !== node.type ) {
-          const message = `Changing node type from ${node.type} to ${newType} will reset its metadata. Are you sure you want to proceed?`;
-          const confirm = window.confirm( message );
-          if ( !confirm ) return;
-          metadata = {};
-        }
-        const updatedNode: Node = {
-          ...node,
-          type: newType as "function" | "key_value",
-          metadata: metadata as any, // eslint-disable-line @typescript-eslint/no-explicit-any
-        };
-        onChange( updatedNode );
-      } }
-      className="w-full border border-gray-300 rounded-md p-2 text-sm"
-    />
-  );
 }
 
 export function ColorEditor( props: { color: string, onChange: ( color: string ) => void } ) {

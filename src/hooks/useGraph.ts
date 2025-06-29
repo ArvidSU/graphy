@@ -1,8 +1,7 @@
 import { useGraphStore } from "@stores/useGraphStore";
 import { shallow } from "zustand/shallow";
-import { selectLocalGraphView, selectNodeAdjacentData, selectKVPMetadata } from "@stores/selectors";
+import { selectLocalGraphView, selectNodeAdjacentData, selectAttributes } from "@stores/selectors";
 import { MetaDataID, NodeID, Node } from "@graphTypes/graphTypes";
-import { evaluateMetadata } from "@logic/kvpLogic";
 
 export function useLocalGraph() {
   const localGraph = useGraphStore( selectLocalGraphView, shallow );
@@ -23,42 +22,37 @@ export function useNode( id: NodeID ) {
   return { ...adjacentData, update };
 }
 
-export function useKVPMetadata( id: MetaDataID ) {
-  const metadata = useGraphStore( selectKVPMetadata( id ) );
+export function useAttributes( id: MetaDataID ) {
+  const attributes = useGraphStore( selectAttributes( id ) );
   const updateNode = useGraphStore( ( s ) => s.updateNode );
-  const nodes = useGraphStore( ( s ) => s.nodes );
 
   const update = ( key: string, value: string ) => {
-    if ( !metadata?.belongsTo ) return;
+    if ( !attributes?.belongsTo ) return;
 
     updateNode( {
-      ...metadata.belongsTo,
-      metadata: {
-        ...metadata.belongsTo.metadata,
+      ...attributes.belongsTo,
+      attributes: {
+        ...attributes.belongsTo.attributes,
         [ id ]: { key, value },
       },
     } );
   };
 
   const remove = () => {
-    if ( !metadata?.belongsTo ) return;
+    if ( !attributes?.belongsTo ) return;
 
-    const newMetadata = { ...metadata.belongsTo.metadata };
-    delete newMetadata[ id ];
+    const newAttributes = { ...attributes.belongsTo.attributes };
+    delete newAttributes[ id ];
 
     updateNode( {
-      ...metadata.belongsTo,
-      metadata: newMetadata,
+      ...attributes.belongsTo,
+      attributes: newAttributes,
     } );
   };
 
-  // Calculate the evaluated value if metadata exists by passing the necessary data
-  const evaluatedValue = metadata ? evaluateMetadata( { key: metadata.key, value: metadata.value }, nodes ) : undefined;
-
-  return metadata
+  return attributes
     ? {
-      ...metadata,
-      evaluatedValue,
+      ...attributes,
       update,
       remove,
     }

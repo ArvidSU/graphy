@@ -11,7 +11,6 @@ export function ToolbarContextSwitcher() {
     { value: "edge" as const, label: "Edges" },
     { value: "nodeType" as const, label: "Types" },
     { value: "project" as const, label: "Project" },
-    { value: "rules" as const, label: "Rules" }
   ];
 
   const handleContextChange = ( context: ToolbarContext ) => {

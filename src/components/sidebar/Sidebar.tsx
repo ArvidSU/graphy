@@ -11,7 +11,6 @@ import { ExportButton } from "@projects/ExportButton";
 import { NodeTree } from "@projects/NodeTree";
 import { Projects } from "@projects/Projects";
 import { NodeTypeEditor } from "@nodeTemplates/NodeTemplateEditor";
-import { Controls } from "@rules/Controls";
 
 export function Sidebar() {
   const { setProjectName, setProjectDescription } = useGraphStore();
@@ -62,8 +61,6 @@ export function Sidebar() {
           ) ) }
         </ul>
       </Section>
-
-      <Controls title="Rules" />
 
       <NodeTypeEditor />
 

@@ -244,8 +244,11 @@ export function View() {
   const handleStageDoubleClick = useCallback( ( e: KonvaEventObject<MouseEvent> ) => {
     // Prevent event bubbling and default behavior
     e.cancelBubble = true;
-    //e.evt.stopPropagation(); // Stop propagation to Konva
-    //e.evt.preventDefault(); // Prevent default behavior
+    e.evt.stopPropagation(); // Stop propagation to Konva
+    e.evt.preventDefault(); // Prevent default behavior
+
+    // This actually fixes the issue with two nodes being created on double click
+    if ( sourceNode ) return;
 
     // Get position relative to the stage
     const stage = e.target.getStage();
@@ -265,7 +268,7 @@ export function View() {
         },
       },
     } );
-  }, [ addNode, localGraph.currentRoot?.id ] );
+  }, [ addNode, localGraph.currentRoot?.id, sourceNode ] );
 
 
   const handleDragEnd = useCallback( ( e: KonvaEventObject<DragEvent>, node: Node ) => {

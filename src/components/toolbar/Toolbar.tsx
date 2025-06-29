@@ -4,7 +4,6 @@ import { NodeToolbar } from "@nodes/NodeToolbar";
 import { EdgeToolbar } from "@edges/EdgeToolbar";
 import { NodeTypeToolbar } from "@nodes/node_templates/NodeTemplateToolbar";
 import { ProjectToolbar } from "@projects/ProjectToolbar";
-import { RulesToolbar } from "@rules/RulesToolbar";
 import { ToolbarContextSwitcher } from "./ToolbarContextSwitcher";
 
 export function Toolbar() {
@@ -20,8 +19,6 @@ export function Toolbar() {
         return <NodeTypeToolbar />;
       case "project":
         return <ProjectToolbar />;
-      case "rules":
-        return <RulesToolbar />;
       default:
         return <ProjectToolbar />; // Default fallback
     }
