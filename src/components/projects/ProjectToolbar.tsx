@@ -2,6 +2,8 @@ import { useGraphStore } from "@stores/useGraphStore";
 import { Section } from "@core/Section";
 import { Input } from "@core/Input";
 import { Button } from "@core/Button";
+import { OperationEditor } from "../operation/OperationEditor";
+import { Operation } from "@/types/operationTypes";
 
 export function ProjectToolbar() {
   const {
@@ -12,7 +14,10 @@ export function ProjectToolbar() {
     setProjectName,
     setProjectDescription,
     nodes,
-    edges
+    edges,
+    operations,
+    updateProjectOperation,
+    deleteProjectOperation
   } = useGraphStore();
 
   const formatDate = ( timestamp: number ) => {
@@ -21,6 +26,45 @@ export function ProjectToolbar() {
 
   const nodeCount = Object.keys( nodes ).length;
   const edgeCount = Object.keys( edges ).length;
+
+  // Create a graph state object that implements WithOperations
+  const projectWithOperations = {
+    operations: operations || {}
+  };
+
+  // Create context for the operation editor - the entire graph state
+  const graphContext = {
+    project: {
+      id: name, // Use name as a simple id for now
+      name,
+      description: description || "",
+      created,
+      modified,
+      nodes,
+      edges,
+      nodeCount,
+      edgeCount
+    }
+  };
+
+  const handleOperationChange = ( operation: Operation, change: string ) => {
+    switch ( change ) {
+      case "delete":
+        deleteProjectOperation( operation.id );
+        break;
+      case "save":
+        updateProjectOperation( operation );
+        break;
+      default:
+        console.warn( `Unknown operation change: ${change}` );
+    }
+  };
+
+  const handleOperationOutput = ( newContext: Record<string, unknown> ) => {
+    // For now, we'll just log the output since updating the entire graph state
+    // would require more complex logic to determine what changed
+    console.log( "Project operation output:", newContext );
+  };
 
   return (
     <div className="space-y-4">
@@ -81,6 +125,14 @@ export function ProjectToolbar() {
           </Button>
         </div>
       </Section>
+
+      <OperationEditor
+        withOperations={ projectWithOperations }
+        inputContext={ graphContext }
+        outputContext={ graphContext }
+        onOutput={ handleOperationOutput }
+        onChange={ handleOperationChange }
+      />
     </div>
   );
 }

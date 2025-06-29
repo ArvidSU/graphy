@@ -25,5 +25,6 @@ export const newProject: GraphState = {
     },
   },
   defaultNodeTypeId: "default",
-  toolbarContext: "project"
+  toolbarContext: "project",
+  operations: {}
 };

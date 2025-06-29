@@ -65,6 +65,7 @@ export interface GraphState {
   nodeTypes: Record<NodeTemplateID, NodeTemplate>;
   defaultNodeTypeId: NodeTemplateID;
   toolbarContext: ToolbarContext;
+  operations?: Record<MetaDataID, Operation>;
 }
 
 export interface GraphView {
